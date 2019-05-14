@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateActivitiesTable extends Migration
 {
@@ -15,7 +15,12 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('project_id');
+            $table->string('description');
             $table->timestamps();
+
+            $table->foreign('project_id')->references('id')->on('projects')
+                ->onDelete('cascade');
         });
     }
 
