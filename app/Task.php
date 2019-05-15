@@ -13,12 +13,50 @@ class Task extends Model
      */
     protected $guarded = [];
 
+    protected $casts = [
+        'completed' => 'boolean',
+    ];
+
     /**
      * The relationships that should be touched on save.
      *
      * @var array
      */
     protected $touches = ['project'];
+
+    protected static function boot()
+    {
+        //  override boot() in parent class with our own definition and then call the parent boot()
+        parent::boot();
+
+        static::created(function ($task) {
+            // Activity::create([
+            //     'project_id'  => $task->project->id,
+            //     'description' => 'created_task',
+            // ]);
+            $task->project->recordActivity('created_task');
+        });
+
+        // static::updated(function ($task) {
+        //     if (!$task->completed) {
+        //         return;
+        //     }
+
+        // $task->project->recordActivity('completed_task');
+
+        // Activity::create([
+        //     'project_id'  => $task->project->id,
+        //     'description' => 'completed_task',
+        // ]);
+        // });
+
+    }
+
+    public function complete()
+    {
+        $this->update(['completed' => true]);
+        $this->project->recordActivity('completed_task');
+    }
 
     /**
      * Get the owning project.
