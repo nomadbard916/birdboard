@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Project extends Model
 {
 
-
     /**
      * Attributes to guard against mass assignment.
      *
@@ -64,13 +63,16 @@ class Project extends Model
 
     public function activity()
     {
-        return $this->hasMany(Activity::class)->latest();
+        return $this->morphMany(Activity::class, 'subject')->latest();
         // add latest() to make it always ascending order
     }
 
     public function recordActivity($description)
     {
-        $this->activity()->create(compact('description'));
+        $this->activity()->create([
+            'project_id'=> $this->project_id,
+            'description' => $description
+        ]);
 
         // Activity::create([
         //     'project_id'  => $this->id,
