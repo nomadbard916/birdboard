@@ -64,7 +64,8 @@ class Project extends Model
 
     public function activity()
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
+        // add latest() to make it always ascending order
     }
 
     public function recordActivity($description)
