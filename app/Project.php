@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use RecordsActivity;
 
     /**
      * Attributes to guard against mass assignment.
@@ -13,8 +14,6 @@ class Project extends Model
      * @var array
      */
     protected $guarded = [];
-
-    public $old = [];
 
     /**
      *  The path to the project.
@@ -65,32 +64,8 @@ class Project extends Model
 
     public function activity()
     {
-        return $this->morphMany(Activity::class, 'subject')->latest();
+        return $this->hasMany(Activity::class)->latest();
         // add latest() to make it always ascending order
     }
 
-    public function recordActivity($description)
-    {
-        $this->activity()->create([
-
-            'description' => $description,
-            'changes'     => $this->activityChanges($description),
-        ]);
-
-        // Activity::create([
-        //     'project_id'  => $this->id,
-        //     'description' => $type,
-        // ]);
-    }
-
-    protected function activityChanges($description)
-    {
-        if ($description == 'updated') {
-            return [
-                'before' => array_except(array_diff($this->old, $this->getAttributes()), 'updated_at'),
-                'after'  => array_except($this->getChanges(), 'updated_at'),
-            ];
-        }
-
-    }
 }

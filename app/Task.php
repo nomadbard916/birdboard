@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
+    use RecordsActivity;
+
     /**
      * Attributes to guard against mass assignment.
      *
@@ -16,6 +18,8 @@ class Task extends Model
     protected $casts = [
         'completed' => 'boolean',
     ];
+
+    protected static $recordableEvents = ['created', 'deleted'];
 
     /**
      * The relationships that should be touched on save.
@@ -101,22 +105,4 @@ class Task extends Model
         return $this->tasks()->create(compact('body'));
     }
 
-    public function activity()
-    {
-        return $this->morphMany(Activity::class, 'subject')->latest();
-        // add latest() to make it always ascending order
-    }
-
-    public function recordActivity($description)
-    {
-        $this->activity()->create([
-            'project_id'=>$this->project_id,
-            'description'=>$description
-        ]);
-
-        // Activity::create([
-        //     'project_id'  => $this->id,
-        //     'description' => $type,
-        // ]);
-    }
 }
