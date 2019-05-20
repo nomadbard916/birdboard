@@ -16,6 +16,7 @@ class CreateActivitiesTable extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('user_id');
             $table->nullableMorphs('subject');
             /**
              * ↑ This is identical to (add nullable):
@@ -26,7 +27,8 @@ class CreateActivitiesTable extends Migration
             $table->text('changes')->nullable();
             $table->timestamps();
 
-            $table->foreign('project_id')->references('id')->on('projects')
+            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade');
         });
     }

@@ -64,6 +64,9 @@ class Project extends Model
 
     public function activity()
     {
+        // For Project only. Other models use morphMany() version
+        // The Project@activity() overrides trait's activity()
+        // meanwhile, trait's function overrides parent class' function
         return $this->hasMany(Activity::class)->latest();
         // add latest() to make it always ascending order
     }

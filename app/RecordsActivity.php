@@ -9,9 +9,7 @@ trait RecordsActivity
     public static function bootRecordsActivity()
     {
 
-        $recordableEvents = self::recordableEvents();
-
-        foreach ($recordableEvents as $event) {
+        foreach (self::recordableEvents() as $event) {
             static::$event(function ($model) use ($event) {
 
                 $model->recordActivity($model->activityDescription($event));
@@ -56,6 +54,7 @@ trait RecordsActivity
             'description' => $description,
             'changes'     => $this->activityChanges(),
             'project_id'  => \class_basename($this) === 'Project' ? $this->id : $this->project_id,
+            'user_id'     => ($this->project ?? $this)->owner->id,
         ]);
 
         // Activity::create([
