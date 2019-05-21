@@ -43,7 +43,7 @@ trait RecordsActivity
             return static::$recordableEvents;
         }
 
-        return ['created', 'updated', 'deleted'];
+        return ['created', 'updated'];
 
     }
 
@@ -54,7 +54,7 @@ trait RecordsActivity
             'description' => $description,
             'changes'     => $this->activityChanges(),
             'project_id'  => \class_basename($this) === 'Project' ? $this->id : $this->project_id,
-            'user_id'     => ($this->project ?? $this)->owner->id,
+            'user_id'     => ($this->project ?? $this)->owner->id, // Project itself is able to return owner directly, while other classes needs to do this indirectly by calling to belonging project first, therefore there's needs a conditional statement.
         ]);
 
         // Activity::create([

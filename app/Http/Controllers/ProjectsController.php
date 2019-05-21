@@ -65,7 +65,7 @@ class ProjectsController extends Controller
     {
         return view('projects.edit', compact('project'));
     }
-    
+
     /**
      * Update the project.
      *
@@ -82,6 +82,15 @@ class ProjectsController extends Controller
         return redirect($project->path());
     }
 
+    public function destroy(Project $project)
+    {
+        // the 'update' here includes every kinds of updating, including deleting
+        $this->authorize('update', $project);
+
+        $project->delete();
+        return redirect('/projects');
+    }
+
     /**
      * Validate the request attributes.
      *
@@ -90,9 +99,9 @@ class ProjectsController extends Controller
     protected function validateRequest()
     {
         return request()->validate([
-            'title' => 'sometimes|required',
+            'title'       => 'sometimes|required',
             'description' => 'sometimes|required',
-            'notes' => 'nullable'
+            'notes'       => 'nullable',
         ]);
     }
 }

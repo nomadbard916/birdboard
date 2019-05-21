@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Project extends Model
 {
@@ -69,6 +70,18 @@ class Project extends Model
         // meanwhile, trait's function overrides parent class' function
         return $this->hasMany(Activity::class)->latest();
         // add latest() to make it always ascending order
+    }
+
+    public function invite(User $user)
+    {
+        return $this->members()->attach($user);
+    }
+
+    public function members()
+    {
+        // is it true a project can have many members?
+        // and also a member can have many projects
+        return $this->belongsToMany(User::class, 'project_members');
     }
 
 }
