@@ -11,7 +11,7 @@ class InvitationTest extends TestCase
 {
     use RefreshDatabase;
     /** @test */
-    public function a_project_can_invite_a_uer()
+    public function a_project_can_invite_a_user()
     {
         // Given I have a project
         $project = ProjectFactory::create();
@@ -19,7 +19,7 @@ class InvitationTest extends TestCase
         // And the owner of the project invites another user
         $newUser = factory(User::class)->create();
 
-        $project->owner->invite($newUser);
+        $project->invite($newUser);
         // Then, that new user will have permission to add tasks
         $this->signIn($newUser);
         $this->post(action('ProjectTasksController@store', $project), $task = ['body' => 'Foo task']);
