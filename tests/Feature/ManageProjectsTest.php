@@ -58,8 +58,9 @@ class ManageProjectsTest extends TestCase
         $project = ProjectFactory::create();
         $project->invite($user);
         /**
-         * or we can write these logic as
+         * or alternatively we can write these logic as
          * $project = tap(ProjectFactory::create()->invite($user));
+         * so that the logic wrapped up in tap() will be returned even after it's invited
          */
 
         $project->invite($user);
