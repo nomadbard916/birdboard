@@ -28,13 +28,13 @@
                     <div class="flex justify-between items-center py-1">
                         <h1>
                             <a class="navbar-brand" href="{{ url('/projects') }}">
-                                <img src="/images/logo.svg" alt="" class="relative" style="top: 2px">
+                                <img src="/images/logo.svg" alt="Birdboard" class="relative" style="top: 2px">
                             </a>
                         </h1>
 
                         <div>
                             <!-- Right Side Of Navbar -->
-                            <ul class="navbar-nav ml-auto">
+                            <ul class="navbar-nav ml-auto list-reset">
                                 <!-- Authentication Links -->
                                 @guest
                                 <li class="nav-item">
@@ -49,12 +49,13 @@
                                 <li class="nav-item dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        {{ Auth::user()->name }} <span class="caret"></span>
+                                        <img width="50" class="rounded-full"
+                                            src="{{ gravatar_url(auth()->user()->email) }}">
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             {{ __('Logout') }}
                                         </a>
 
@@ -71,9 +72,11 @@
                 </div>
             </nav>
 
-            <main class="container mx-auto py-6 section">
-                @yield('content')
-            </main>
+            <div class="section">
+                <main class="container mx-auto py-6">
+                    @yield('content')
+                </main>
+            </div>
         </div>
     </body>
 
