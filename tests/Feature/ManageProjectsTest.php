@@ -31,19 +31,16 @@ class ManageProjectsTest extends TestCase
 
         $this->get('/projects/create')->assertStatus(200);
 
-        $attributes = [
-            'title'       => $this->faker->sentence,
-            'description' => $this->faker->sentence,
-            'notes'       => 'General notes here.',
-        ];
+        // $attributes = [
+        //     'title'       => $this->faker->sentence,
+        //     'description' => $this->faker->sentence,
+        //     'notes'       => 'General notes here.',
+        // ];
 
-        $response = $this->post('/projects', $attributes);
+        $attributes = \factory(Project::class)->raw();
 
-        $project = Project::where($attributes)->first();
-
-        $response->assertRedirect($project->path());
-
-        $this->get($project->path())
+        $this->followingRedirects()
+            ->post('/projects', $attributes)
             ->assertSee($attributes['title'])
             ->assertSee($attributes['description'])
             ->assertSee($attributes['notes']);
@@ -77,6 +74,7 @@ class ManageProjectsTest extends TestCase
         // $this->withoutExceptionHandling();
 
         $project = ProjectFactory::create();
+        $user    = $this->signIn();
 
         $this->delete($project->path())
             ->assertRedirect('/login');
@@ -86,6 +84,9 @@ class ManageProjectsTest extends TestCase
             ->assertStatus(403);
 
         // $this->assertDatabaseMissing('projects', $project->only('id'));
+
+        $project->invite($user);
+        $this->actingAs($user)->delete($project->path())->assertStatus(403);
     }
 
     /** @test */

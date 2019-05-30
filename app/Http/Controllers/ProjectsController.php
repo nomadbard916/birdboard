@@ -13,7 +13,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = auth()->user()-> accessibleProjects();
+        $projects = auth()->user()->accessibleProjects();
 
         return view('projects.index', compact('projects'));
     }
@@ -85,7 +85,7 @@ class ProjectsController extends Controller
     public function destroy(Project $project)
     {
         // the 'update' here includes every kinds of updating, including deleting
-        $this->authorize('update', $project);
+        $this->authorize('manage', $project);
 
         $project->delete();
         return redirect('/projects');
