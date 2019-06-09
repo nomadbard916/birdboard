@@ -55,6 +55,7 @@ class ProjectsController extends Controller
         if ($tasks = request('tasks')) {
             $project->addTasks($tasks);
         }
+
         if (request()->wantsJson()) {
             return ['message' => $project->path()];
         }

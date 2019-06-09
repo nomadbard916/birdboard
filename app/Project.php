@@ -63,6 +63,17 @@ class Project extends Model
         return $this->tasks()->create(compact('body'));
     }
 
+    public function addTasks($tasks)
+    {
+
+        // Activity::create([
+        //     'project_id'  => $this->id,
+        //     'description' => 'created_task',
+        // ]);
+
+        return $this->tasks()->createMany($tasks);
+    }
+
     public function activity()
     {
         // For Project only. Other models use morphMany() version
