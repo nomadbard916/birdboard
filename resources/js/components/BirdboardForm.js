@@ -14,6 +14,18 @@ class BirdboardForm {
 
             return data;
         }, {});
+
+        /**
+         * alternative method:
+         * let data = {}
+         *
+         * for (let attribute in this.originalData){
+         *      data[attribute] = this.attribute
+         * }
+         *
+         * return data
+         *
+         */
     }
 
     post(endpoint) {

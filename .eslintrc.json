@@ -19,6 +19,6 @@
         "vue"
     ],
     "rules": {
-        "indent": ["off", 4]
+
     }
 }
